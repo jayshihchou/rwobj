@@ -110,6 +110,7 @@ public class MeshPreviewer : MonoBehaviour
     }
 
     [SerializeField] string inputFilePath = string.Empty;
+    public bool readNormal;
     [ContextMenu("Read from file")]
     void ReadFromFile()
     {
@@ -140,8 +141,14 @@ public class MeshPreviewer : MonoBehaviour
             // }
             result.SetUVs(0, uvs);
         }
+        if (readNormal)
+        {
+            var normals = ReadObj.ReadNormals(inputFilePath);
+            result.normals = normals;
+        }
         result.RecalculateBounds();
-        result.RecalculateNormals();
+        if (!readNormal)
+            result.RecalculateNormals();
         result.RecalculateTangents();
         MakePreview();
     }
